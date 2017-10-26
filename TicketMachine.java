@@ -92,23 +92,33 @@ public class TicketMachine
      * Return the money in the balance.
      * The balance is cleared.
      */
-   public int refundBalance()
+    public int refundBalance()
     {
         int amountToRefund;
         amountToRefund = balance;
         balance = 0;
         return amountToRefund;
     }
-    
+
     /**
-     * Clears total even if u are doing any operation in this moment
+     * Clears total unless you are any operation at the moment
      */
-   public int emptyMachine()
-   {
-       int balanceToRefund;
-       balanceToRefund = balance + total;
-       total = 0;
-       balance = 0;
-       return balanceToRefund;
-   }
+    public int emptyMachine()
+    {
+        int state;
+        state = 0;
+        if (balance != 0)
+        {
+            System.out.println("No se puede vaciar ya que alguien esta realizando una operación en este momento");
+            state = -1;
+        }
+        else
+        {
+            int balanceToRefund;
+            balanceToRefund = total;
+            total = 0;
+            state = balanceToRefund;
+        }
+        return state;
+    }
 }
