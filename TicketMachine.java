@@ -19,14 +19,19 @@ public class TicketMachine
     private int total;
     // The kind of machine
     private boolean prize;
-
+    // Max number of tickets
+    private int max;
+    // Counter of tickets
+    private int ticketcounter;
+    
     /**
      * Create a machine that issues tickets of the given price.
      */
-    public TicketMachine(int cost, boolean special)
+    public TicketMachine(int cost, boolean special,int tick)
     {
         price = cost;
         prize = special;
+        max = tick;
         balance = 0;
         total = 0;
     }
@@ -54,12 +59,19 @@ public class TicketMachine
      */
     public void insertMoney(int amount)
     {
-        if(amount > 0) {
-            balance = balance + amount;
+        if (ticketcounter >= max)
+        {
+            //Send message if u reach max number of tickets printed
+            System.out.println("Max number of tickets reached");
         }
-        else {
-            System.out.println("Use a positive amount rather than: " +
-                amount);
+        else 
+        {
+            if(amount > 0) {
+                balance = balance + amount;
+            }
+            else {
+                System.out.println("Use a positive amount rather than: " + amount);
+            }
         }
     }
 
@@ -68,11 +80,18 @@ public class TicketMachine
      * reduce the current balance by the ticket price. Print
      * an error message if more money is required.
      */
+
     public void printTicket()
     {
         if(balance >= price) 
         {
-            
+            if (ticketcounter >= max)
+            {
+                //Send message if u reach max number of tickets printed
+                System.out.println("Max number of tickets reached");
+            }
+            else
+            {
                 if (prize == true)
                 {
                     //Simulate the printing of a prize ticket
@@ -81,25 +100,28 @@ public class TicketMachine
                     System.out.println("# Prize Ticket");
                     System.out.println("##################");
                     System.out.println();
+                    ticketcounter = ticketcounter + 1;
                 }
-            // Simulate the printing of a ticket.
-            System.out.println("##################");
-            System.out.println("# The BlueJ Line");
-            System.out.println("# Ticket");
-            System.out.println("# " + price + " cents.");
-            System.out.println("##################");
-            System.out.println();
-             
-            // Update the total collected with the price.
-            total = total + price;
-            // Reduce the balance by the prince.
-            balance = balance - price;
+                // Simulate the printing of a ticket.
+                System.out.println("##################");
+                System.out.println("# The BlueJ Line");
+                System.out.println("# Ticket");
+                System.out.println("# " + price + " cents.");
+                System.out.println("##################");
+                System.out.println();
+                ticketcounter = ticketcounter + 1;
+                // Update the total collected with the price.
+                total = total + price;
+                // Reduce the balance by the prince.
+                balance = balance - price;
+            }
         }
-        else {
+        else 
+        {
             System.out.println("You must insert at least: " +
-                (price - balance) + " more cents.");
-
+            (price - balance) + " more cents.");
         }
+        
     }
 
     /**
@@ -111,28 +133,28 @@ public class TicketMachine
         int amountToRefund;
         amountToRefund = balance;
         balance = 0;
-        return amountToRefund;
+        return amountToRefund; 
     }
-
+    
     /**
-     * Clears total unless you are any operation at the moment
+     * Return the money in the balance
+     * The balance is cleared
+     * The total money is cleared
      */
     public int emptyMachine()
     {
-        int state;
-        state = 0;
+        int status = -1;
         if (balance != 0)
         {
-            System.out.println("No se puede vaciar ya que alguien esta realizando una operación en este momento");
-            state = -1;
+            System.out.println("No se puede vacíar ya que alguien esta realizando una operacion en este momento");
         }
         else
         {
             int balanceToRefund;
             balanceToRefund = total;
             total = 0;
-            state = balanceToRefund;
+            status = balanceToRefund;
         }
-        return state;
+        return status;
     }
 }
